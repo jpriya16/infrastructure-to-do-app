@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket = "infra-todo"
+    bucket = "infra-todo-app"
     key    = "terraform.tfstate"
-    region = "ap-southeast-1"
+    region = "ap-south-1"
   }
 }

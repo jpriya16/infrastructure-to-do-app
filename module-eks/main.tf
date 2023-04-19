@@ -1,3 +1,14 @@
+data "aws_vpc" "cluster-vpc" {
+  filter {
+    name = "tag:Name"
+    values = ["my-vpc"]
+  }
+}
+
+data "aws_subnet_ids" "public_subnets" {
+  vpc_id = data.aws_vpc.cluster-vpc.id
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.0"
@@ -19,8 +30,8 @@ module "eks" {
     }
   }
 
-  vpc_id                   = "vpc-0e35b9b93d5883c60"
-  subnet_ids               = ["subnet-06e87b5ad8b65f83e", "subnet-032d61a8b20b4f187", "subnet-0e708b168fa62a6a0"]
+  vpc_id                   = data.aws_vpc.cluster-vpc.id
+  subnet_ids               = data.aws_subnet_ids.public_subnets.ids
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
@@ -28,7 +39,6 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    blue = {}
     green = {
       min_size     = 2
       max_size     = 3
