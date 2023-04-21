@@ -3,20 +3,11 @@ data "aws_vpc" "cluster-vpc" {
     name = "tag:Name"
     values = ["my-vpc"]
   }
-  # depends_on = [
-  #   module.my-vpc
-  # ]
 }
 
-# module "my-vpc" {
-#   source = "../module-vpc"
-# }
 
 data "aws_subnet_ids" "public_subnets" {
   vpc_id = data.aws_vpc.cluster-vpc.id
-  #  depends_on = [
-  #   data.aws_vpc.cluster-vpc
-  # ]
 }
 
 module "eks" {
