@@ -1,5 +1,8 @@
 pipeline {
     agent any
+     parameters {
+            string(name: image_id, defaultValue: '', description:'output from to-do-app pipeline')
+     }
     stages {
         stage ('Build') {
             steps {
@@ -7,10 +10,10 @@ pipeline {
                 // let's explode something
                 script {
                     echo  "image_id"
-                    echo "${env.image_id}"
+                    echo "${params.image_id}"
                 }
                   sh "terraform init"
-                  sh "terraform plan -var image_id = ${env.image_id}"
+                  sh "terraform plan -var image_id = ${params.image_id}"
             }
 
                 }
@@ -18,7 +21,7 @@ pipeline {
         stage ('Deploy') {
             steps {
                    withAWS(region: 'ap-southeast-1', credentials: 'awsecr') {
-                    sh "terraform apply  -var image_id = ${env.image_id} --auto-approve"
+                    sh "terraform apply  -var image_id = ${params.image_id} --auto-approve"
                     }
                  }
         }
