@@ -21,7 +21,7 @@ pipeline {
         stage ('Deploy') {
             steps {
                    withAWS(region: 'ap-southeast-1', credentials: 'awsecr') {
-                    sh "terraform apply  -var image_id = ${params.image_id} --auto-approve"
+                    sh "terraform apply --auto-approve"
                     }
                  }
         }
