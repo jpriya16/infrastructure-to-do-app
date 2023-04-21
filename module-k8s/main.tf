@@ -5,6 +5,13 @@ terraform {
     }
   }
 }
+
+
+variable "image_id" {
+  type        = string
+  description = "The id of the machine image (AMI) to use for the server."
+}
+
 data "aws_eks_cluster" "to-do-app-cluster" {
   name = "to-do-app-cluster"
 }
@@ -55,7 +62,7 @@ resource "kubernetes_deployment" "to-do-app" {
       }
       spec {
         container {
-          image = "public.ecr.aws/v9y1c4w4/to-do-app:latest"
+          image = var.image_id
           name = "to-do-app"
           port {
             container_port = 80
