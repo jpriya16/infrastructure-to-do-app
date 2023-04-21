@@ -12,18 +12,22 @@ variable "image_id" {
   default = ""
 }
 
+# module "to-do-app-cluster-1" {
+#   source = "../module-eks"
+# }
+
 data "aws_eks_cluster" "to-do-app-cluster" {
   name = "to-do-app-cluster"
-   depends_on = [
-    module.eks
-  ]
+  #  depends_on = [
+  #   module.to-do-app-cluster-1
+  # ]
 }
 
 data "aws_eks_cluster_auth" "to-do-app-cluster" {
   name = "to-do-app-cluster"
-  depends_on = [
-    module.eks
-  ]
+  # depends_on = [
+  #   module.to-do-app-cluster-1
+  # ]
 }
 
 provider "kubernetes" {
@@ -111,7 +115,7 @@ resource "kubernetes_service" "to-do-app-lb-srv" {
       target_port = 80
     }
     type = "LoadBalancer"
-     load_balancer_source_ranges = [
+    load_balancer_source_ranges = [
       "3.7.0.0/16"
     ]
   }
