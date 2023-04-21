@@ -14,10 +14,16 @@ variable "image_id" {
 
 data "aws_eks_cluster" "to-do-app-cluster" {
   name = "to-do-app-cluster"
+   depends_on = [
+    module.eks
+  ]
 }
 
 data "aws_eks_cluster_auth" "to-do-app-cluster" {
   name = "to-do-app-cluster"
+  depends_on = [
+    module.eks
+  ]
 }
 
 provider "kubernetes" {
