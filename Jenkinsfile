@@ -13,7 +13,7 @@ pipeline {
                     echo "${params.image_id}"
                 }
                   sh "terraform init"
-                  sh "terraform plan -var image_id = ${params.image_id}"
+                  sh "terraform plan"
             }
 
                 }

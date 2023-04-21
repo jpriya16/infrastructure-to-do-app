@@ -3,6 +3,9 @@ data "aws_vpc" "cluster-vpc" {
     name = "tag:Name"
     values = ["my-vpc"]
   }
+  # depends_on = [
+  #  module.aws_vpc.cluster-vpc
+  # ]
 }
 
 data "aws_subnet_ids" "public_subnets" {
@@ -33,7 +36,6 @@ module "eks" {
   vpc_id                   = data.aws_vpc.cluster-vpc.id
   subnet_ids               = data.aws_subnet_ids.public_subnets.ids
 
-  # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
     instance_types = ["t3.micro"]
   }
@@ -52,4 +54,8 @@ module "eks" {
     cluster_name   = "to-do-app-cluster"
     terraform = "true"
   }
+
+  depends_on = [
+    data.aws_vpc.cluster-vpc
+  ]
 }

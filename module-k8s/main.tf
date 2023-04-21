@@ -6,10 +6,10 @@ terraform {
   }
 }
 
-
 variable "image_id" {
   type        = string
   description = "The id of the machine image (AMI) to use for the server."
+  default = ""
 }
 
 data "aws_eks_cluster" "to-do-app-cluster" {
@@ -25,12 +25,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.to-do-app-cluster.certificate_authority[0].data)
   token                  = data.aws_eks_cluster_auth.to-do-app-cluster.token
 }
-#provider "kubernetes" {
-#  host = var.host
-#  client_certificate     = var.client_certificate
-#  client_key             = var.client_key
-#  cluster_ca_certificate = var.cluster_ca_certificate
-#}
 
 resource "kubernetes_deployment" "to-do-app" {
   metadata {
@@ -71,6 +65,9 @@ resource "kubernetes_deployment" "to-do-app" {
       }
     }
   }
+  depends_on = [
+    data.aws_eks_cluster.to-do-app-cluster
+  ]
 }
 
 resource "kubernetes_service" "to-do-app-srv-cluster" {
@@ -88,6 +85,10 @@ resource "kubernetes_service" "to-do-app-srv-cluster" {
     }
     type = "ClusterIP"
   }
+  depends_on = [
+    data.aws_eks_cluster.to-do-app-cluster,
+    kubernetes_deployment.to-do-app
+  ]
 }
 
 resource "kubernetes_service" "to-do-app-lb-srv" {
@@ -105,5 +106,10 @@ resource "kubernetes_service" "to-do-app-lb-srv" {
     }
     type = "LoadBalancer"
   }
+  depends_on = [
+    data.aws_eks_cluster.to-do-app-cluster,
+    kubernetes_deployment.to-do-app,
+    kubernetes_service.to-do-app-srv-cluster
+  ]
 }
 
