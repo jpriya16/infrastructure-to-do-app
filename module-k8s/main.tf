@@ -105,6 +105,9 @@ resource "kubernetes_service" "to-do-app-lb-srv" {
       target_port = 80
     }
     type = "LoadBalancer"
+     load_balancer_source_ranges = [
+      "3.7.0.0/16"
+    ]
   }
   depends_on = [
     data.aws_eks_cluster.to-do-app-cluster,

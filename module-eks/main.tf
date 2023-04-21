@@ -3,9 +3,6 @@ data "aws_vpc" "cluster-vpc" {
     name = "tag:Name"
     values = ["my-vpc"]
   }
-  # depends_on = [
-  #  module.aws_vpc.cluster-vpc
-  # ]
 }
 
 data "aws_subnet_ids" "public_subnets" {
