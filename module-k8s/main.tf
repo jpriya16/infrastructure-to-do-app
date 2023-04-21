@@ -71,9 +71,9 @@ resource "kubernetes_deployment" "to-do-app" {
       }
     }
   }
-  depends_on = [
-    data.aws_eks_cluster.to-do-app-cluster
-  ]
+//  depends_on = [
+//    data.aws_eks_cluster.to-do-app-cluster
+//  ]
 }
 
 resource "kubernetes_service" "to-do-app-srv-cluster" {
@@ -91,10 +91,10 @@ resource "kubernetes_service" "to-do-app-srv-cluster" {
     }
     type = "ClusterIP"
   }
-  depends_on = [
-    data.aws_eks_cluster.to-do-app-cluster,
-    kubernetes_deployment.to-do-app
-  ]
+//  depends_on = [
+//    data.aws_eks_cluster.to-do-app-cluster,
+//    kubernetes_deployment.to-do-app
+//  ]
 }
 
 resource "kubernetes_service" "to-do-app-lb-srv" {
@@ -115,10 +115,10 @@ resource "kubernetes_service" "to-do-app-lb-srv" {
       "3.7.0.0/16"
     ]
   }
-  depends_on = [
-    data.aws_eks_cluster.to-do-app-cluster,
-    kubernetes_deployment.to-do-app,
-    kubernetes_service.to-do-app-srv-cluster
-  ]
+//  depends_on = [
+//    data.aws_eks_cluster.to-do-app-cluster,
+//    kubernetes_deployment.to-do-app,
+//    kubernetes_service.to-do-app-srv-cluster
+//  ]
 }
 

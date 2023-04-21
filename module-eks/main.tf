@@ -3,16 +3,16 @@ data "aws_vpc" "cluster-vpc" {
     name = "tag:Name"
     values = ["my-vpc"]
   }
-  depends_on = [
-    module.vpc
-  ]
+//  depends_on = [
+//    module.vpc
+//  ]
 }
 
 data "aws_subnet_ids" "public_subnets" {
   vpc_id = data.aws_vpc.cluster-vpc.id
-   depends_on = [
-    module.vpc
-  ]
+//   depends_on = [
+//    module.vpc
+//  ]
 }
 
 module "eks" {
@@ -58,7 +58,7 @@ module "eks" {
     terraform = "true"
   }
 
-  depends_on = [
-    data.aws_vpc.cluster-vpc
-  ]
+//  depends_on = [
+//    data.aws_vpc.cluster-vpc
+//  ]
 }
